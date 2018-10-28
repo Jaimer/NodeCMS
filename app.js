@@ -4,6 +4,8 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const {select} = require('./helpers/handlebars-helpers');
+const methodOverride = require('method-override');
 
 mongoose.connect('mongodb://localhost/cms', { useNewUrlParser: true }).then(db => {
     console.log('DB Connected');
@@ -14,7 +16,8 @@ mongoose.Promise = global.Promise;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.engine('handlebars', exphbs({defaultLayout: 'home'}));
+app.use(methodOverride('_method'));
+app.engine('handlebars', exphbs({defaultLayout: 'home', helpers: {select: select}}));
 app.set('view engine', 'handlebars');
 
 const main = require('./routes/home/index');

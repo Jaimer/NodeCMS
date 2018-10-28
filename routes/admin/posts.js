@@ -17,8 +17,38 @@ router.get('/create', (req, res)=>{
     res.render('admin/posts/create');
 });
 
-router.get('/edit', (req, res)=>{
-    res.render('admin/posts/edit');
+router.get('/edit/:id', (req, res)=>{
+    Post.findById(req.params.id).then(post=>{
+        res.render('admin/posts/edit', {post: post});
+    });
+});
+
+router.put('/edit/:id', (req, res)=>{
+    Post.findById(req.params.id).then(post=>{
+
+        let allowComments = true;
+
+        if(req.body.allowComments){
+            allowComments = true;
+        }else{
+            allowComments = false;
+        }
+
+        post.title = req.body.title;
+        post.status = req.body.status;
+        post.allowComments = allowComments;
+        post.body = req.body.body;
+
+        post.save().then(updatedPost=>{
+            res.redirect('/admin/posts');
+        });
+    });
+});
+
+router.get('/delete/:id', (req, res)=>{
+    Post.findByIdAndDelete(req.params.id).then(result=>{
+        res.redirect('/admin/posts');
+    });
 });
 
 router.post('/create', (req, res)=>{

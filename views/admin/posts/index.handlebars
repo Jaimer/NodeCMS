@@ -10,6 +10,7 @@
                         <th>Title</th>
                         <th>Status</th>
                         <th>Allow Comments</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,6 +20,8 @@
                         <td>{{title}}</td>
                         <td>{{status}}</td>
                         <td>{{allowComments}}</td>
+                        <td><a href="/admin/posts/edit/{{id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></td>
+                        <td><a href="/admin/posts/delete/{{id}}?_method=DELETE" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
                     </tr>
                     {{/each}}
                 </tbody>
