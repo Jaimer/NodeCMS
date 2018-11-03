@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
+const {isEmpty, uploadDir} = require('../../helpers/upload-helper');
+const fs = require('fs');
+const path = require('path');
 
 router.all('/*', (req, res, next) => {
     req.app.locals.layout = 'admin';
@@ -45,13 +48,28 @@ router.put('/edit/:id', (req, res)=>{
     });
 });
 
-router.get('/delete/:id', (req, res)=>{
-    Post.findByIdAndDelete(req.params.id).then(result=>{
-        res.redirect('/admin/posts');
+router.delete('/delete/:id', (req, res)=>{
+    Post.findById(req.params.id).then(post => {
+        post.remove();
+        fs.unlink(uploadDir + post.file, (err) => {
+            //req.flash('success_message', 'Post was deleted');
+            res.redirect('/admin/posts')
+        });
     });
 });
 
 router.post('/create', (req, res)=>{
+
+    let filename = 'url.jpeg';
+
+    if(!isEmpty(req.files)){
+        let file = req.files.file;
+        filename = Date.now() + '-' + file.name;
+
+        file.mv('./public/uploads/' + filename, (err) => {
+            if(err) throw err;
+        });
+    }
 
     let allowComments = true;
 
@@ -65,7 +83,8 @@ router.post('/create', (req, res)=>{
         title: req.body.title,
         status: req.body.status,
         allowComments: allowComments,
-        body: req.body.body
+        body: req.body.body,
+        file: filename
     });
 
     newPost.save().then(savedPost => {
