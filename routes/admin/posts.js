@@ -42,7 +42,18 @@ router.put('/edit/:id', (req, res)=>{
         post.allowComments = allowComments;
         post.body = req.body.body;
 
+        if(!isEmpty(req.files)){
+            let file = req.files.file;
+            let filename = Date.now() + '-' + file.name;
+            post.file = filename;
+
+            file.mv('./public/uploads/' + filename, (err) => {
+                if(err) throw err;
+            });
+        }
+
         post.save().then(updatedPost=>{
+            req.flash('success_message', `Post ${post.title} updated successfully`);
             res.redirect('/admin/posts');
         });
     });
@@ -51,10 +62,11 @@ router.put('/edit/:id', (req, res)=>{
 router.delete('/delete/:id', (req, res)=>{
     Post.findById(req.params.id).then(post => {
         post.remove();
-        fs.unlink(uploadDir + post.file, (err) => {
-            //req.flash('success_message', 'Post was deleted');
-            res.redirect('/admin/posts')
-        });
+        if(post.file != 'url.jpeg'){
+            fs.unlink(uploadDir + post.file, (err) => { });
+        }
+        req.flash('success_message', `Post ${post.title} was deleted`);
+        res.redirect('/admin/posts')
     });
 });
 
@@ -88,10 +100,11 @@ router.post('/create', (req, res)=>{
     });
 
     newPost.save().then(savedPost => {
-        console.log(savedPost);
+        req.flash('success_message', `Post ${savedPost.title} was created succesfully` );
         res.redirect('/admin/posts');
-    }).catch(error => {
-        console.log('Post not created: '+ error);
+    }).catch(validator => {
+        res.render('admin/posts/create', {errors: validator.errors});
+        console.log('Post not created: '+ validator);
     });
 });
 

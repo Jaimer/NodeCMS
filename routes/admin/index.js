@@ -19,6 +19,7 @@ router.post('/generate-fake-posts', (req, res) => {
         post.status = 'public';
         post.allowComments = faker.random.boolean();
         post.body = faker.lorem.paragraph(5);
+        post.file = 'url.jpeg'
 
         post.save().then(savedPost => {
 

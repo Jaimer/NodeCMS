@@ -7,6 +7,10 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res)=>{
+    req.session.user = 'user';
+    if(req.session.user){
+        console.log(`we found ${req.session.user}`);
+    }
     res.render('home/index');
 });
 
