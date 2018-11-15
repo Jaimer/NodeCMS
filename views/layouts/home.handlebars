@@ -13,8 +13,13 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="css/blog-home.css" rel="stylesheet">
+    {{#if post}}
+      <!-- Custom styles for this template -->
+      <link href="/css/blog-post.css" rel="stylesheet">
+    {{else}}
+      <!-- Custom styles for this template -->
+      <link href="/css/blog-home.css" rel="stylesheet">
+    {{/if}}
 
   </head>
 

@@ -5,7 +5,7 @@ module.exports = {
         return options.fn(this).replace(new RegExp(' value=\"'+selected+'\"'), '$&selected="selected"');
     },
 
-    generateTime: function(date, format){
+    generateDate: function(date, format){
         return moment(date).format(format);
     }
 };
