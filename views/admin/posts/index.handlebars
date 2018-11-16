@@ -10,6 +10,7 @@
                         <th>Imagen</th>
                         <th>Title</th>
                         <th>Status</th>
+                        <th>Category</th>
                         <th>Allow Comments</th>
                         <th>Actions</th>
                     </tr>
@@ -22,6 +23,7 @@
                         <td><img src="/uploads/{{file}}" alt="{{file}}" height="50px"></td>
                         <td>{{title}}</td>
                         <td>{{status}}</td>
+                        <td>{{category.name}}</td>
                         <td>{{allowComments}}</td>
                         <td><a href="/admin/posts/edit/{{id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></td>
                         <td><form action="/admin/posts/delete/{{id}}?_method=DELETE" method="POST"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button></form></td>
