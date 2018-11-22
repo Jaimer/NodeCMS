@@ -10,6 +10,7 @@ const upload = require('express-fileupload');
 const session = require('express-session');
 const flash = require('connect-flash');
 const {mongoDBURL} = require('./config/database');
+const passport = require('passport');
 
 //MongoDB
 mongoose.connect(mongoDBURL, { useNewUrlParser: true }).then(db => {
@@ -30,6 +31,9 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Local Variables Using Middleware
 app.use((req,res,next) =>{
     res.locals.success_message = req.flash('success_message');

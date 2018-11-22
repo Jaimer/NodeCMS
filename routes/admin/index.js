@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
 const faker = require('faker');
+const {userAuthenticated} = require('../../helpers/authentication');
 
-router.all('/*', (req, res, next) => {
+router.all('/*', userAuthenticated, (req, res, next) => {
     req.app.locals.layout = 'admin';
     next();
 });
 
 router.get('/', (req, res)=>{
-    res.render('admin/index');
+    res.render('admin/index', {user: req.user});
 });
 
 router.post('/generate-fake-posts', (req, res) => {
