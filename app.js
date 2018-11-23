@@ -16,8 +16,8 @@ const passport = require('passport');
 mongoose.connect(mongoDBURL, { useNewUrlParser: true }).then(db => {
     console.log('DB Connected');
 }).catch(error => console.log('Could not connect to DB: ' + error));
-
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
 
 //Middlewares
 app.use(express.static(path.join(__dirname, 'public')));

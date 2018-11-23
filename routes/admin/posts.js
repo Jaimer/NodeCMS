@@ -69,13 +69,21 @@ router.put('/edit/:id', (req, res)=>{
 });
 
 router.delete('/delete/:id', (req, res)=>{
-    Post.findById(req.params.id).then(post => {
-        post.remove();
+    Post.findById(req.params.id)
+    .populate('comments')
+    .then(post => {
         if(post.file != 'url.jpeg'){
             fs.unlink(uploadDir + post.file, (err) => { });
         }
-        req.flash('success_message', `Post ${post.title} was deleted`);
-        res.redirect('/admin/posts')
+        if(!post.comments.length < 1){
+            post.comments.forEach(comment => {
+                comment.remove();
+            });
+        }
+        post.remove().then(postRemoved => {
+            req.flash('success_message', `Post ${post.title} was deleted`);
+            res.redirect('/admin/posts')
+        });
     });
 });
 
