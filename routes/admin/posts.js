@@ -34,6 +34,12 @@ router.get('/edit/:id', (req, res)=>{
     });
 });
 
+router.get('/my-posts', (req, res)=>{
+    Post.find({user: req.user.id}).then(posts=>{
+        res.render('admin/posts/my-posts', {posts: posts});
+    });
+});
+
 router.put('/edit/:id', (req, res)=>{
     Post.findById(req.params.id).then(post=>{
 

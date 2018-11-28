@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h1>ALL POSTS</h1>
+            <h1>MY POSTS</h1>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -12,6 +12,7 @@
                         <th>Status</th>
                         <th>Category</th>
                         <th>Allow Comments</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +25,8 @@
                         <td>{{status}}</td>
                         <td>{{category.name}}</td>
                         <td>{{allowComments}}</td>
+                        <td><a href="/admin/posts/edit/{{id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></td>
+                        <td><form action="/admin/posts/delete/{{id}}?_method=DELETE" method="POST"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button></form></td>
                     </tr>
                     {{/each}}
                 </tbody>
